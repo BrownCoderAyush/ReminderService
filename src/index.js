@@ -1,10 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const cron = require('node-cron');
 const {PORT , DB_SYNC} = require('./config/serverConfig');
 const apiRoutes = require('./routes/index');
 const db = require('./models/index');
-const { sendBasicEmail } = require('./services/emailService');
+// const { sendBasicEmail } = require('./services/emailService');
 const app = express();
 
 const setupAndStartServer = ()=>{
@@ -19,12 +19,15 @@ const setupAndStartServer = ()=>{
             db.sequelize.sync({alter:true});
         }
 
-        sendBasicEmail(
-            'ayushplayzsoft@gmail.com',
-            'ayushplayssoft@gmail.com',
-            'This is testing email',
-            'Hey, how are you , I hope you like the support'
-        );
+        // sendBasicEmail(
+        //     'ayushplayzsoft@gmail.com',
+        //     'ayushplayssoft@gmail.com',
+        //     'This is testing email',
+        //     'Hey, how are you , I hope you like the support'
+        // );
+        cron.schedule('* * * * *', () => {
+            console.log('running a task every minute');
+          })
     })
 }
 
