@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cron = require('node-cron');
+const jobs = require('./utils/job');
 const {PORT , DB_SYNC} = require('./config/serverConfig');
 const apiRoutes = require('./routes/index');
 const db = require('./models/index');
@@ -18,16 +19,17 @@ const setupAndStartServer = ()=>{
         if(DB_SYNC){
             db.sequelize.sync({alter:true});
         }
-
+        jobs();
+        console.log('hello');
         // sendBasicEmail(
         //     'ayushplayzsoft@gmail.com',
         //     'ayushplayssoft@gmail.com',
         //     'This is testing email',
         //     'Hey, how are you , I hope you like the support'
         // );
-        cron.schedule('* * * * *', () => {
-            console.log('running a task every minute');
-          })
+        // cron.schedule('* * * * *', () => {
+        //     console.log('running a task every minute');
+        //   })
     })
 }
 
