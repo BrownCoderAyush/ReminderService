@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cron = require('node-cron');
 const jobs = require('./utils/job');
+
 const {PORT , DB_SYNC} = require('./config/serverConfig');
 const apiRoutes = require('./routes/index');
 const db = require('./models/index');
