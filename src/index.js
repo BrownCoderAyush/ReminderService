@@ -6,31 +6,32 @@ const jobs = require('./utils/job');
 const {PORT , DB_SYNC} = require('./config/serverConfig');
 const apiRoutes = require('./routes/index');
 const db = require('./models/index');
-// const { sendBasicEmail } = require('./services/emailService');
+const { createChannel , subscribeMessage } = require('./utils/messageQueue');
+const { REMINDER_BINDING_KEY } = require('./config/serverConfig');
+const EmailService = require('./services/emailService');
 const app = express();
 
-const setupAndStartServer = ()=>{
+const setupAndStartServer = async ()=>{
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended:true}));
     app.use('/api' , apiRoutes);
 
-    app.listen(PORT , ()=>{
+    app.listen(PORT , async ()=>{
         console.log(`Server started running on port ${PORT}`);
         if(DB_SYNC){
             db.sequelize.sync({alter:true});
         }
+
+        /* rabbit mq broker channel */ 
+        const channel = await createChannel();
+
+        /*Subscribing to the messages on <REMINDER_BINDING_KEY> Queue */
+        subscribeMessage(channel , EmailService , REMINDER_BINDING_KEY);
+
+        /* cron jobs  */
         jobs();
-        console.log('hello');
-        // sendBasicEmail(
-        //     'ayushplayzsoft@gmail.com',
-        //     'ayushplayssoft@gmail.com',
-        //     'This is testing email',
-        //     'Hey, how are you , I hope you like the support'
-        // );
-        // cron.schedule('* * * * *', () => {
-        //     console.log('running a task every minute');
-        //   })
+               
     })
 }
 

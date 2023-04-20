@@ -35,7 +35,7 @@ class TicketRepository{
             const ticket = await notificationTicket.create(data);
             return ticket;
         } catch (error) {
-            console.log('something went wrong in repository layer',error);
+            console.log('something went w wrong in repository layer',error);
             throw error;
         }
     }

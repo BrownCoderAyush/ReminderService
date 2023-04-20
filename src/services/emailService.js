@@ -29,6 +29,7 @@ const fetchPendingEmails = async(timestamp)=>{
 const createNotification = async(data)=>{
     try {
         const response = await ticketRepository.create(data);
+        console.log("here is data" , data);
         return response;
     } catch (error) {
         console.log('something went wrong in service layer',error);
@@ -46,9 +47,27 @@ const updateTicket = async( ticketId , data)=>{
         
     }
 }
+const subscribeEvents = async (payload)=>{
+    let service = payload.service;
+    let data = payload.data;
+    console.log('hello b');
+    switch(service){
+        case 'CREATE_TICKET':
+            await createNotification(data);
+            break;
+        case 'SEND_BASIC_EMAIL':
+            await sendBasicEmail(data);
+            break;
+        default:
+            console.log('No valid email received');
+            break;
+    }
+
+}
 module.exports ={
 sendBasicEmail,
 fetchPendingEmails,
 createNotification,
-updateTicket
+updateTicket,
+subscribeEvents
 }
