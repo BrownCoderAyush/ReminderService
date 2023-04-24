@@ -36,9 +36,64 @@ MESSAGE_BROKER_URL='amqp://localhost'
 and then execute `npx sequelize db:migrate`
 
 
+# API
 
+## Ticket Model 
 
+- Schema example 
 
+```
+
+ {
+    'subject' : 'flight Alert Reminder',
+    'content' : 'reminder',
+    'recipientEmail' : userEmail,
+    'status' : 'PENDING' , 
+    'notificationTime' : reminderDateObj
+}
+
+```
+
+---
+
+**Desc**: Create ticket
+
+**Route** : `/tickets`
+
+**Method**: `POST`
+
+**Body** : 
+
+```
+{
+    'subject' : 'flight Alert Reminder',
+    'content' : 'reminder',
+    'recipientEmail' : userEmail,
+    'status' : 'PENDING' , 
+    'notificationTime' : reminderDateObj
+}
+  
+```
+
+**Response** : 
+
+```
+{
+    "success":true,
+    "data":{
+    'subject' : 'flight Alert Reminder',
+    'content' : 'reminder',
+    'recipientEmail' : userEmail,
+    'status' : 'PENDING' , 
+    'notificationTime' : reminderDateObj
+}
+  ,
+    "err":{},
+    "message":'Successfully create an email reminder '
+}
+```
+
+---
 
 
 
